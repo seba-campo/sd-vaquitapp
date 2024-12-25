@@ -1,0 +1,112 @@
+.root {
+  padding: 18px;
+  --progress-color: #36cd26;
+}
+
+.content {
+  max-width: 768px;
+  margin: 0 auto;
+  display: grid;
+  gap: 18px;
+}
+
+.title {
+  margin: 0;
+  font-size: 30px;
+  text-align: center;
+  font-weight: 600;
+}
+
+.goal {
+  background-color: #212121;
+  border-radius: 12px;
+  position: sticky;
+  top: 0px;
+  // padding: 18px;
+  // text-align: center;
+  // font-weight: 600;
+  display: grid;
+  gap: 12px;
+}
+
+.goalImg {
+  height: 300px;
+  object-fit: cover;
+  object-position: center center;
+  width: 100%;
+  border-radius: 12px 12px 0 0;
+}
+
+.goalTexts {
+  padding: 15px;
+  display: grid;
+  gap: 12px;
+}
+
+.goalTitle {
+  margin: 0;
+  font-size: 24px;
+
+}
+
+.goalDonations {
+  font-size: 15px;
+  color: #999;
+
+  .totalDonations {
+    color: var(--progress-color);
+
+  }
+}
+
+.goalProgressBar {
+  background-color: #333;
+  height: 12px;
+  border-radius: 3px;
+  overflow: hidden;
+
+  &::before {
+    content: "";
+    display: block;
+    background-color: var(--progress-color);
+    height: 12px;
+    width: calc(var(--progress) * 1%);
+  }
+}
+
+.goalDesc {
+  color: #AAA;
+}
+
+.donations {
+  display: grid;
+  // overflow: auto;
+  gap: 6px;
+}
+
+.donation {
+  border-radius: 12px;
+  border: solid 1px #181818;
+  padding: 15px;
+}
+
+.donateButton {
+  position: fixed;
+  bottom: 18px;
+  right: 18px;
+  left: 18px;
+  background: #2243b0;
+  border: none;
+  border-radius: 24px;
+  padding: 8px 16px;
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: .5px;
+  font-size: 18px;
+  padding: 18px;
+  cursor: pointer;
+
+  &:hover {
+    background: #325adb;
+  }
+}
