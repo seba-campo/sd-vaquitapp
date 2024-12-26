@@ -1,11 +1,15 @@
 import Image from "next/image";
 import styles from "./page.module.scss";
+import { getConfirmedPayments } from "@/lib/purchases";
+import { getCampaign } from "@/lib/campaign";
+import Link from "next/link";
 
-export default function Home() {
-  const array = Array.from({ length: 91 }, (_, i) => i);
-  const totalDonations = 100000;
-  const donationsGoal = 300000;
-  const progressPercent = 66;
+export default async function Home() {
+  const confirmed = await getConfirmedPayments();
+  const totalDonations = confirmed.reduce((a, b) => a + b.amount, 0);
+  const donationsGoal = 420000;
+  const progressPercent = Math.round((totalDonations / donationsGoal) * 100);
+  const campaign = await getCampaign();
 
   return (
     <div className={styles.root}>
@@ -17,34 +21,39 @@ export default function Home() {
             src="https://www.shutterstock.com/image-photo/new-playstation-5-slim-model-260nw-2377124501.jpg"
           />
           <div className={styles.goalTexts}>
-            <h2 className={styles.goalTitle}>Quiero mi Play!!!</h2>
+            <h2 className={styles.goalTitle}>{campaign.title}</h2>
             <div className={styles.goalDonations}>
-              <span className={styles.totalDonations}>{totalDonations}</span>{" "}/{" "}
-              {donationsGoal}
+              <span className={styles.totalDonations}>${totalDonations.toLocaleString()}</span>{" "}/{" "}
+              ${donationsGoal.toLocaleString()}
             </div>
             <div
               className={styles.goalProgressBar}
               style={{ "--progress": progressPercent } as any}
             ></div>
-            <p className={styles.goalDesc}>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Deserunt
-              quidem veniam nisi, eum laboriosam inventore pariatur unde modi,
-              molestias debitis asperiores aspernatur doloribus odit dicta
-              culpa, quod et ea enim.
-            </p>
+            <p className={styles.goalDesc} dangerouslySetInnerHTML={{ __html: campaign.description.replace(/\n/g, "<br>") }} />
           </div>
         </div>
         <div className={styles.donations}>
-          {array.map((i) => (
+          {confirmed.map((i) => (
             <div
-              key={i}
+              key={i.id}
               className={styles.donation}
             >
-              Donación
+              <div className={styles.donationAmount}>
+                ${i.amount.toLocaleString()}
+              </div>
+              <div className={styles.donationText}>
+                <span>
+                  {i.message}
+                </span>
+                <span>
+                  {i.from}
+                </span>
+              </div>
             </div>
           ))}
         </div>
-        <button className={styles.donateButton}>Sumate a la causa</button>
+        <Link href='/donate' className={styles.donateButton}>Sumate a la causa</Link>
       </div>
     </div>
   );
