@@ -12,7 +12,7 @@ export default async function Home() {
         <div>
           <h1 className={styles.title}>{campaign.title}</h1>
           <h2 className={styles.subtitle}>
-            Con tu donación me ayudás a acercarme a cumplir mi objetivo.
+            Con tu donación me ayudás a acercarme mi objetivo.
           </h2>
         </div>
         <DonationForm />
