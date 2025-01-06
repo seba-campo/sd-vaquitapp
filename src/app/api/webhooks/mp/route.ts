@@ -3,6 +3,8 @@ import { confirmPurchase } from "@/lib/purchases";
 
 export async function POST(request: Request, { params }) {
   const body: WebhokPayload = await request.json();
+  console.log("Webhook received", body);
+
   if (body.type === "payment") {
     const mpPayment = await getPaymentById(body.data.id);
     if (mpPayment.status === "approved") {

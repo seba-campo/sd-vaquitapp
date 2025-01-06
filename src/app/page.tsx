@@ -7,9 +7,9 @@ import Link from "next/link";
 export default async function Home() {
   const confirmed = await getConfirmedPayments();
   const totalDonations = confirmed.reduce((a, b) => a + b.amount, 0);
-  const donationsGoal = 420000;
-  const progressPercent = Math.round((totalDonations / donationsGoal) * 100);
   const campaign = await getCampaign();
+  const donationsGoal = campaign.amount;
+  const progressPercent = Math.round((totalDonations / donationsGoal) * 100);
 
   return (
     <div className={styles.root}>
