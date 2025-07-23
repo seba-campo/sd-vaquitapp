@@ -57,8 +57,9 @@ export function confirmPurchase(purchaseId: string) {
   // confirmamos la compra en la DB
   transactionColl.doc(purchaseId).get().then(async (p)=>{
     if(!p.exists) return;
-    const transactionData = p.data();
-    const update = await transactionColl.doc(purchaseId).update({status: "confirmed"});
+    var transactionData = p.data();
+    transactionData.sttus = "confirmed"
+    await transactionColl.doc(purchaseId).update(transactionData);
     console.log(`Purchase ${purchaseId} confirmed ${transactionData}`);
 
     await donationColl.add({
