@@ -1,3 +1,8 @@
+import { fs } from "./firebase";
+
+const donationColl = fs.collection("donations");
+const transactionColl = fs.collection("transactions");
+
 type Purchase = {
   id: string;
   from: string;
@@ -44,12 +49,28 @@ export async function createPurchase(
     date: new Date(),
     status: "pending",
   };
-  // guardamos esta nueva purchase en la db y devolvemos el id
-  return "1234";
+  const transactionDoc = await transactionColl.add(purchase);
+  return transactionDoc.id
 }
 
 export function confirmPurchase(purchaseId: string) {
   // confirmamos la compra en la DB
-  console.log(`Purchase ${purchaseId} confirmed`);
-  return true;
+  transactionColl.doc(purchaseId).get().then(async (p)=>{
+    if(!p.exists) return;
+    const transactionData = p.data();
+    const update = await transactionColl.doc(purchaseId).update({status: "confirmed"});
+    console.log(`Purchase ${purchaseId} confirmed ${transactionData}`);
+
+    await donationColl.add({
+      from: transactionData.from,
+      amount: transactionData.amount,
+      message: transactionData.message,
+      date: new Date(),
+      status: "confirmed",
+    })
+
+    return true
+  })
+  console.log(`Purchase ${purchaseId} not confirmed`);
+  return false;
 }
