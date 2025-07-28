@@ -58,7 +58,7 @@ export function confirmPurchase(purchaseId: string) {
   transactionColl.doc(purchaseId).get().then(async (p)=>{
     if(!p.exists) return;
     var transactionData = p.data();
-    transactionData.sttus = "confirmed"
+    transactionData.status = "confirmed"
     await transactionColl.doc(purchaseId).update(transactionData);
     console.log(`Purchase ${purchaseId} confirmed ${transactionData}`);
 

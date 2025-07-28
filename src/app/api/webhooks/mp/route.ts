@@ -7,9 +7,11 @@ export async function POST(request: Request, { params }) {
 
   if (body.type === "payment") {
     const mpPayment = await getPaymentById(body.data.id);
+    console.log(mpPayment)
     if (mpPayment.status === "approved") {
       console.log(`Payment ${mpPayment.id} approved`);
       const purchaseId = mpPayment.external_reference;
+      console.log("EXTERNAL ", purchaseId)
 
       await confirmPurchase(purchaseId);
     }
