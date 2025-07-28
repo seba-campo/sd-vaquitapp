@@ -12,6 +12,22 @@ type Purchase = {
   status: string;
 };
 export async function getConfirmedPayments(): Promise<Purchase[]> {
+
+  const snapshot  =  await donationColl.get()
+  const donations = snapshot.docs.map((d) => {
+    const data = d.data();
+    const {from, amount, message, date, status} =  data;
+    return {
+      id: d.id,
+      from,
+      amount,
+      message,
+      date,
+      status
+    }
+  });
+  console.log(donations)
+  return donations
   // Mock data
   return [
     {
