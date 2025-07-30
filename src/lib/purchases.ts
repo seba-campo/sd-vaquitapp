@@ -26,7 +26,6 @@ export async function getConfirmedPayments(): Promise<Purchase[]> {
       status
     }
   });
-  console.log(donations)
   return donations
   // Mock data
   return [
@@ -72,7 +71,11 @@ export async function createPurchase(
 export function confirmPurchase(purchaseId: string) {
   // confirmamos la compra en la DB
   transactionColl.doc(purchaseId).get().then(async (p)=>{
-    if(!p.exists) return;
+    console.log(!p.exists)
+    if(!p.exists) {
+      console.log(`Purchase ${purchaseId} not confirmed`);
+      return
+    };
     var transactionData = p.data();
     transactionData.status = "confirmed"
     await transactionColl.doc(purchaseId).update(transactionData);
@@ -88,6 +91,4 @@ export function confirmPurchase(purchaseId: string) {
 
     return true
   })
-  console.log(`Purchase ${purchaseId} not confirmed`);
-  return false;
 }
